@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyHost | Real-Time Weather Updates</title>
+    <meta name="description" content="SkyHost is a premium weather application providing accurate, real-time atmospheric conditions for any chosen location globally.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1 class="visually-hidden">SkyHost - Real-time Weather Updates</h1>
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17.5 19C19.9853 19 22 16.9853 22 14.5C22 12.1325 20.176 10.2016 17.8596 10.0275C17.4109 6.64391 14.5427 4 11 4C7.13401 4 4 7.13401 4 11C2.34315 11 1 12.3431 1 14C1 15.6569 2.34315 17 4 17L5 17" />
+                    <path d="M12 11V21M12 21L8 17M12 21L16 17" />
+                </svg>
+                <span>SkyHost</span>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <section class="search-section">
+                <form id="search-form" class="search-bar">
+                    <input type="text" id="location-input" placeholder="Search for any location..." autocomplete="off" required>
+                    <button type="submit" id="search-btn" aria-label="Search weather">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                    <!-- Suggestions Dropdown -->
+                    <ul id="suggestions" class="suggestions-list hidden"></ul>
+                </form>
+            </section>
+            
+            <section class="weather-dashboard hidden" id="weather-dashboard">
+                <div class="weather-main card">
+                    <div class="weather-header">
+                        <h2 id="location-name">City Name, Country</h2>
+                        <span id="current-date" class="date">Monday, 1 Jan 2024</span>
+                    </div>
+                    
+                    <div class="weather-body">
+                        <div class="weather-icon-wrapper">
+                            <img id="weather-icon" src="" alt="Weather Icon" class="weather-icon">
+                            <div class="weather-desc" id="weather-desc">Condition</div>
+                        </div>
+                        <div class="temperature-wrapper">
+                            <span class="temperature" id="temperature">--</span>
+                            <span class="unit">°C</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="weather-details card">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <div class="detail-info">
+                            <span class="detail-label">Feels Like</span>
+                            <span class="detail-value" id="feels-like">--°</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                            </svg>
+                        </div>
+                        <div class="detail-info">
+                            <span class="detail-label">Humidity</span>
+                            <span class="detail-value" id="humidity">--%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
+                            </svg>
+                        </div>
+                        <div class="detail-info">
+                            <span class="detail-label">Wind Speed</span>
+                            <span class="detail-value" id="wind-speed">-- km/h</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2v20M2 12h20"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
+                        </div>
+                        <div class="detail-info">
+                            <span class="detail-label">Pressure</span>
+                            <span class="detail-value" id="pressure">-- hPa</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading & Error States -->
+            <div id="loading-state" class="state-container hidden">
+                <div class="spinner"></div>
+                <p>Fetching atmosphere condition...</p>
+            </div>
+            
+            <div id="error-state" class="state-container hidden">
+                <div class="error-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                </div>
+                <p id="error-message">Location not found. Please try again.</p>
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
